@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface EmpleadoService {
 	List<Empleado> findAll();	
+  Empleado save(Empleado empleado);
 }

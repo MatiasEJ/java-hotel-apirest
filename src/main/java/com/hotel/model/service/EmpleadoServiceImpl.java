@@ -15,8 +15,26 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Empleado> findAll() {
+  public List<Empleado> findAll() {
 		return (List<Empleado>) empleadoDao.findAll();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+  public Empleado findEmpleado(Empleado empleado) {
+		return empleadoDao.findById(empleado.getId()).orElse(null);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+  public void delete(Empleado empleado) {
+		return empleadoDao.delete;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void save(Empleado empleado) {
+		return empleadoDao.save(empleado.getId());
 	}
 	
 }
