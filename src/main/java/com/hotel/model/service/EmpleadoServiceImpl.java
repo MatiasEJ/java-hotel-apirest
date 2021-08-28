@@ -26,15 +26,15 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-  public void delete(Empleado empleado) {
-		return empleadoDao.delete;
+	@Transactional
+  	public void delete(Empleado empleado) {
+		empleadoDao.delete(empleado);
 	}
 
 	@Override
-	@Transactional(readOnly = false)
-	public void save(Empleado empleado) {
-		return empleadoDao.save(empleado.getId());
+	@Transactional
+	public Empleado save(Empleado empleado) {
+		return empleadoDao.save(empleado);
 	}
 	
 }
