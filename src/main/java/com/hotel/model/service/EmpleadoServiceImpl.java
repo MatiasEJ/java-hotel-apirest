@@ -21,14 +21,14 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
 	@Override
 	@Transactional(readOnly = true)
-  public Empleado findEmpleado(Empleado empleado) {
-		return empleadoDao.findById(empleado.getId()).orElse(null);
+  public Empleado findEmpleadoById(Long id) {
+		return empleadoDao.findById(id).orElse(null);
 	}
 
 	@Override
 	@Transactional
-  	public void delete(Empleado empleado) {
-		empleadoDao.delete(empleado);
+  	public void deleteById(Long id) {
+		empleadoDao.deleteById(id);
 	}
 
 	@Override

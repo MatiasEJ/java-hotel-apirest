@@ -6,13 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -28,13 +22,14 @@ public class EmpleadoRestController {
 	}
 
 	@GetMapping(EmpleadoUri.EMPLEADO_ID)
-	public Empleado findEmpleadoById(Empleado empleado) {
-		return service.findEmpleado(empleado);
+	public Empleado findEmpleadoById(@PathVariable Long id) {
+		return service.findEmpleadoById(id);
 	}
 
 	@PutMapping(EmpleadoUri.EMPLEADO_ID)
-	public Empleado update(@RequestBody Empleado empleado){
-		Empleado empleadoActual = service.findEmpleado(empleado);
+	@ResponseStatus(HttpStatus.CREATED)
+	public Empleado updateById(@RequestBody Empleado empleado,@PathVariable Long id){
+		Empleado empleadoActual = service.findEmpleadoById(id);
 		empleadoActual.setNombre(empleado.getNombre());
 		empleadoActual.setApellido(empleado.getApellido());
 		empleadoActual.setDni(empleado.getDni());
@@ -50,9 +45,10 @@ public class EmpleadoRestController {
 		return service.save(empleado);
 	}
 
-	@PostMapping(EmpleadoUri.EMPLEADO_ID)
-	public void delete(Empleado empleado) {
-		service.delete(empleado);
+	@DeleteMapping(EmpleadoUri.EMPLEADO_ID)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteById(@PathVariable Long id) {
+		service.deleteById(id);
 	}
 
 }

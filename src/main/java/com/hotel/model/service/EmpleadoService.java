@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface EmpleadoService {
 	List<Empleado> findAll();	
-  Empleado findEmpleado(Empleado empleado);
+  Empleado findEmpleadoById(Long id);
   Empleado save(Empleado empleado);
-  void delete(Empleado empleado);
+  void deleteById(Long id);
 
 
 
