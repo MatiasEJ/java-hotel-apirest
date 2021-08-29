@@ -2,9 +2,13 @@ package com.hotel.controller;
 
 import com.hotel.model.entity.Empleado;
 import com.hotel.model.service.EmpleadoServiceImpl;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +26,29 @@ public class EmpleadoRestController {
 	}
 
 	@GetMapping(EmpleadoUri.EMPLEADO_ID)
-	public Empleado findEmpleadoById(@PathVariable Long id) {
-		return service.findEmpleadoById(id);
+	public ResponseEntity<?> findEmpleadoById(@PathVariable Long id) {
+		Empleado empleado;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			empleado = service.findEmpleadoById(id);
+		} catch (DataAccessException ex) {
+			response.put("mensaje", "Error al realizar la consulta"
+					.concat(": ")
+					.concat(ex.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		}
+		if (empleado == null) {
+			response.put("mensaje", "El empleado de ID: "
+					.concat(id.toString())
+					.concat(" no existe en la base de datos."));
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(empleado, HttpStatus.OK);
 	}
 
 	@PutMapping(EmpleadoUri.EMPLEADO_ID)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Empleado updateById(@RequestBody Empleado empleado,@PathVariable Long id){
+	public Empleado updateById(@RequestBody Empleado empleado, @PathVariable Long id) {
 		Empleado empleadoActual = service.findEmpleadoById(id);
 		empleadoActual.setNombre(empleado.getNombre());
 		empleadoActual.setApellido(empleado.getApellido());
@@ -37,7 +57,7 @@ public class EmpleadoRestController {
 		empleadoActual.setFechaNacimiento(empleado.getFechaNacimiento());
 
 		return service.save(empleadoActual);
-	} 
+	}
 
 	@PostMapping(EmpleadoUri.EMPLEADO)
 	@ResponseStatus(HttpStatus.CREATED)
