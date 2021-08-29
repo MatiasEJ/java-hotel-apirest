@@ -35,7 +35,7 @@ public class EmpleadoRestController {
 			response.put("mensaje", "Error al realizar la consulta"
 					.concat(": ")
 					.concat(ex.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		if (empleado == null) {
 			response.put("mensaje", "El empleado de ID: "
@@ -47,28 +47,71 @@ public class EmpleadoRestController {
 	}
 
 	@PutMapping(EmpleadoUri.EMPLEADO_ID)
-	@ResponseStatus(HttpStatus.CREATED)
-	public Empleado updateById(@RequestBody Empleado empleado, @PathVariable Long id) {
+	public ResponseEntity<?> updateById(@RequestBody Empleado empleado, @PathVariable Long id) {
+		Map<String, Object> response = new HashMap<>();
 		Empleado empleadoActual = service.findEmpleadoById(id);
-		empleadoActual.setNombre(empleado.getNombre());
-		empleadoActual.setApellido(empleado.getApellido());
-		empleadoActual.setDni(empleado.getDni());
-		empleadoActual.setDireccion(empleado.getDireccion());
-		empleadoActual.setFechaNacimiento(empleado.getFechaNacimiento());
+		Empleado empleadoActualizado = null;
 
-		return service.save(empleadoActual);
+		if (empleadoActual == null) {
+			response.put("mensaje", "El empleado de ID: "
+					.concat(id.toString())
+					.concat(" no existe en la base de datos. No se pudo editar"));
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		}
+
+		try {
+			empleadoActual.setNombre(empleado.getNombre());
+			empleadoActual.setApellido(empleado.getApellido());
+			empleadoActual.setDni(empleado.getDni());
+			empleadoActual.setDireccion(empleado.getDireccion());
+			empleadoActual.setFechaNacimiento(empleado.getFechaNacimiento());
+			empleadoActualizado = service.save(empleadoActual);
+
+		} catch (DataAccessException ex) {
+			response.put("mensaje", "Error al actualizar: "
+					.concat(ex.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "Empleado actualizado con exito: ");
+		response.put("empleado", empleadoActualizado);
+
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 
 	@PostMapping(EmpleadoUri.EMPLEADO)
-	@ResponseStatus(HttpStatus.CREATED)
-	public Empleado create(@RequestBody Empleado empleado) {
-		return service.save(empleado);
+	public ResponseEntity<?> create(@RequestBody Empleado empleado) {
+		Empleado nuevoEmpleado = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			nuevoEmpleado = service.save(empleado);
+		} catch (DataAccessException ex) {
+			response.put("mensaje", "Error al realizar INSERT"
+					.concat(": ")
+					.concat(ex.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		response.put("mensaje", "Empleado creado con exito.");
+		response.put("empleado", nuevoEmpleado);
+
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(EmpleadoUri.EMPLEADO_ID)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteById(@PathVariable Long id) {
-		service.deleteById(id);
+	public ResponseEntity<?> deleteById(@PathVariable Long id) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			service.deleteById(id);
+		} catch (DataAccessException ex) {
+			response.put("mensaje", "Error al realizar DELETE"
+					.concat(": ")
+					.concat(ex.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		response.put("mensaje", "Empleado borrado con exito.");
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+
 	}
 
 }

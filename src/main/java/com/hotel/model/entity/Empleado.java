@@ -2,6 +2,7 @@ package com.hotel.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,8 +21,10 @@ public class Empleado implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String nombre;	
+	@Column(nullable = false)
 	private String apellido;	
 	private String dni;	
+	@Column(nullable = false)
 	private String direccion;	
 	@Temporal(TemporalType.DATE)
 	private Date fechaNacimiento;
