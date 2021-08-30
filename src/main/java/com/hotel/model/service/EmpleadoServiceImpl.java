@@ -1,10 +1,8 @@
-package com.hotel.model.service.impl;
+package com.hotel.model.service;
 
 import com.hotel.model.dao.EmpleadoDao;
 import com.hotel.model.entity.Empleado;
 import java.util.List;
-
-import com.hotel.model.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
