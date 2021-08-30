@@ -2,13 +2,17 @@ package com.hotel.controller;
 
 import com.hotel.model.entity.Empleado;
 import com.hotel.model.service.EmpleadoServiceImpl;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,16 +51,17 @@ public class EmpleadoRestController {
 	}
 
 	@PutMapping(EmpleadoUri.EMPLEADO_ID)
-	public ResponseEntity<?> updateById(@RequestBody Empleado empleado, @PathVariable Long id) {
+	public ResponseEntity<?> updateById(@Valid @RequestBody Empleado empleado, BindingResult result, @PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
 		Empleado empleadoActual = service.findEmpleadoById(id);
 		Empleado empleadoActualizado = null;
 
+		if (result.hasErrors()) {
+		return handleError(result, response);
+		}
+
 		if (empleadoActual == null) {
-			response.put("mensaje", "El empleado de ID: "
-					.concat(id.toString())
-					.concat(" no existe en la base de datos. No se pudo editar"));
-			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			return handleError(result, response);
 		}
 
 		try {
@@ -78,10 +83,16 @@ public class EmpleadoRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 
+
 	@PostMapping(EmpleadoUri.EMPLEADO)
-	public ResponseEntity<?> create(@RequestBody Empleado empleado) {
+	public ResponseEntity<?> create(@Valid @RequestBody Empleado empleado, BindingResult result) {
 		Empleado nuevoEmpleado = null;
 		Map<String, Object> response = new HashMap<>();
+
+		if (result.hasErrors()) {
+		return handleError(result, response);
+		}
+
 		try {
 			nuevoEmpleado = service.save(empleado);
 		} catch (DataAccessException ex) {
@@ -96,6 +107,7 @@ public class EmpleadoRestController {
 
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
+
 
 	@DeleteMapping(EmpleadoUri.EMPLEADO_ID)
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
@@ -114,4 +126,12 @@ public class EmpleadoRestController {
 
 	}
 
+	private ResponseEntity<?> handleError(BindingResult result, Map<String, Object> response) {
+		List<String> errors = result.getFieldErrors().stream()
+				.map(error -> "El campo: " + error.getField() + " " + error.getDefaultMessage())
+				.collect(Collectors.toList());
+		
+		response.put("errors", errors);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+	}
 }

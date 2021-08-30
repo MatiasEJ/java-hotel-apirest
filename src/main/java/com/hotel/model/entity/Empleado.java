@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -20,9 +21,17 @@ public class Empleado implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotEmpty
+	@Size(min=2,max=15)
+	@Column(nullable = false)
 	private String nombre;	
+	@NotEmpty
+	@Size(min=2,max=15)
 	@Column(nullable = false)
 	private String apellido;	
+	@NotEmpty
+	@Size(min=8,max=8)
 	private String dni;	
 	@Column(nullable = false)
 	private String direccion;	
