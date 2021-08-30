@@ -1,13 +1,13 @@
 package com.hotel.controller;
 
 import com.hotel.model.entity.Empleado;
-import com.hotel.model.service.EmpleadoServiceImpl;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+
+import com.hotel.model.service.impl.EmpleadoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class EmpleadoRestController {
 		Empleado empleado;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			empleado = service.findEmpleadoById(id);
+			empleado = service.findById(id);
 		} catch (DataAccessException ex) {
 			response.put("mensaje", "Error al realizar la consulta"
 					.concat(": ")
@@ -53,7 +53,7 @@ public class EmpleadoRestController {
 	@PutMapping(EmpleadoUri.EMPLEADO_ID)
 	public ResponseEntity<?> updateById(@Valid @RequestBody Empleado empleado, BindingResult result, @PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
-		Empleado empleadoActual = service.findEmpleadoById(id);
+		Empleado empleadoActual = service.findById(id);
 		Empleado empleadoActualizado = null;
 
 		if (result.hasErrors()) {

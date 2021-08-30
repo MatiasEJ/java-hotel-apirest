@@ -1,8 +1,10 @@
-package com.hotel.model.service;
+package com.hotel.model.service.impl;
 
 import com.hotel.model.dao.EmpleadoDao;
 import com.hotel.model.entity.Empleado;
 import java.util.List;
+
+import com.hotel.model.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
 	@Override
 	@Transactional(readOnly = true)
-  public Empleado findEmpleadoById(Long id) {
+  public Empleado findById(Long id) {
 		return empleadoDao.findById(id).orElse(null);
 	}
 
