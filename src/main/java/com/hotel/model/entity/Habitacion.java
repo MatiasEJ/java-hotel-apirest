@@ -9,10 +9,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "habitaciones")
 public class Habitacion extends BaseEntity {
-    private String numeroIden;
-    private String nombre;
-    private TipoHab tipoHab;
+    private String num_id;
+    private TipoHab tipo_hab;
     private Tematica tematica;
-    private double precioNoche;
+    private double precio_noche;
     
 }
