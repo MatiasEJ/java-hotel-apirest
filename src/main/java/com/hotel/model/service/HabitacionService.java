@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface HabitacionService {
     List<Habitacion> findAll();
-    Habitacion find(Habitacion habitacion);
+    Habitacion find(Long id);
     Habitacion save(Habitacion habitacion);
     void delete(Long id);
 }

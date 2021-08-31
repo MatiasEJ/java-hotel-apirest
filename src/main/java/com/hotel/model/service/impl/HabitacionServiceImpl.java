@@ -21,8 +21,8 @@ public class HabitacionServiceImpl implements HabitacionService {
     }
     
     @Override
-    public Habitacion find(Habitacion habitacion) {
-        return habitacionDao.findById(habitacion.getId()).orElse(null);
+    public Habitacion find(Long id) {
+        return habitacionDao.findById(id).orElse(null);
     }
     
     @Override
