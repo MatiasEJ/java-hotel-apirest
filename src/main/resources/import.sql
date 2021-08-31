@@ -7,13 +7,15 @@ INSERT INTO empleados (nombre, apellido, dni, direccion) VALUES ('Mariano','torr
 
 INSERT INTO tipos_habitacion (nombre, descrip,cant_huespedes) VALUES ('Single','Pequeña',1);
 INSERT INTO tipos_habitacion (nombre, descrip,cant_huespedes) VALUES ('Doble','Doble we',2);
+INSERT INTO tipos_habitacion (nombre, descrip,cant_huespedes) VALUES ('Triple','Doble we',3);
+INSERT INTO tipos_habitacion (nombre, descrip,cant_huespedes) VALUES ('Multiple','Doble we',8);
 
 INSERT INTO tematicas (nombre, descrip) VALUES ('Amazonas','Amazonas we');
 INSERT INTO tematicas (nombre, descrip) VALUES ('Montañal','ñañañewee we');
 INSERT INTO tematicas (nombre, descrip) VALUES ('80','Son los 80 we');
 
-INSERT INTO habitaciones (num_id,precio_noche) VALUES('2312938172',90.0);
-INSERT INTO habitaciones (num_id,precio_noche) VALUES('2312938172',90.0);
-INSERT INTO habitaciones (num_id,precio_noche) VALUES('2312938172',90.0);
-INSERT INTO habitaciones (num_id,precio_noche) VALUES('2312938172',90.0);
-INSERT INTO habitaciones (num_id,precio_noche) VALUES('2312938172',90.0);
+INSERT INTO habitaciones (num_id,precio_noche) VALUES('12121212',90.0);
+INSERT INTO habitaciones (num_id,precio_noche) VALUES('1212121',100.0);
+INSERT INTO habitaciones (num_id,precio_noche) VALUES('12121212',96.0);
+INSERT INTO habitaciones (num_id,precio_noche) VALUES('12121212',113.0);
+INSERT INTO habitaciones (num_id,precio_noche) VALUES('12121212',108.0);

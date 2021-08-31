@@ -10,5 +10,4 @@ import javax.persistence.Table;
 @Table(name="tipos_habitacion")
 public class TipoHab extends BaseHabitaciones {
     private int cant_huespedes;
-    
 }
