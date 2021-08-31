@@ -132,6 +132,6 @@ public class EmpleadoRestController {
 				.collect(Collectors.toList());
 		
 		response.put("errors", errors);
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 }
