@@ -29,7 +29,7 @@ public class HabitacionRestController {
         Habitacion          habitacion;
         Map<String, Object> response = new HashMap<>();
         try {
-            habitacion = habitacionService.find(id);
+            habitacion = habitacionService.findHabitacionById(id);
         } catch (DataAccessException ex) {
             return errorConsulta(response, ex);
         }
@@ -59,7 +59,7 @@ public class HabitacionRestController {
     
     @PutMapping("/habitacion/{id}")
     public ResponseEntity<?> update(@RequestBody Habitacion habitacion, @PathVariable Long id) {
-        Habitacion habitacionActual         = habitacionService.find(id);
+        Habitacion habitacionActual         = habitacionService.findHabitacionById(id);
         Habitacion habActualizada = null;
         Map<String, Object> response = new HashMap<>();
         

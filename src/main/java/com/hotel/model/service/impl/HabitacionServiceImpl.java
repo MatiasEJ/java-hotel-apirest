@@ -11,8 +11,13 @@ import java.util.List;
 
 @Service
 public class HabitacionServiceImpl implements HabitacionService {
+    
     @Autowired
     private HabitacionDao habitacionDao;
+    
+    public HabitacionServiceImpl(HabitacionDao habitacionDao) {
+        this.habitacionDao = habitacionDao;
+    }
     
     @Override
     @Transactional(readOnly = true)
@@ -21,7 +26,7 @@ public class HabitacionServiceImpl implements HabitacionService {
     }
     
     @Override
-    public Habitacion find(Long id) {
+    public Habitacion findHabitacionById(Long id) {
         return habitacionDao.findById(id).orElse(null);
     }
     
