@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -35,4 +33,12 @@ public class Persona extends BaseEntity {
     private String direccion;
     @Temporal(TemporalType.DATE)
     private Date   fechaNacimiento;
+    
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    private Date createAt;
+    @PrePersist
+    public void prePersist(){
+        createAt = new Date();
+    }
 }
