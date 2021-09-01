@@ -21,5 +21,5 @@ import org.hibernate.collection.internal.PersistentSortedMap;
 @Table(name="empleados")
 public class Empleado extends Persona {
 
-
+    private String foto;
 }

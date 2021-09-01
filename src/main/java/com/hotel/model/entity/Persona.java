@@ -33,12 +33,12 @@ public class Persona extends BaseEntity {
     private String direccion;
     @Temporal(TemporalType.DATE)
     private Date   fechaNacimiento;
-    
-    @NotNull
-    @Temporal(TemporalType.DATE)
-    private Date createAt;
-    @PrePersist
-    public void prePersist(){
-        createAt = new Date();
-    }
+//
+//    @NotNull
+//    @Temporal(TemporalType.DATE)
+//    private Date createAt;
+//    @PrePersist
+//    public void prePersist(){
+//        createAt = new Date();
+//    }
 }

@@ -10,11 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.hotel.shared.ValidationResponse.*;
 
@@ -123,7 +129,37 @@ public class EmpleadoRestController {
         
         response.put("mensaje", "Empleado borrado con exito.");
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+    
+    @PostMapping("/empleados/upload")
+    public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id) {
+        Map<String, Object> response = new HashMap<>();
+        Empleado            empleado = null;
         
+        try {
+            empleado = service.findById(id);
+        } catch (DataAccessException ex) {
+            return errorConsulta(response, ex);
+        }
+        if (!archivo.isEmpty()) {
+            String nombreArchivo = UUID.randomUUID().toString()+"_"+archivo.getOriginalFilename().replace(" ", "");
+            Path   rutaArchivo   = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
+            try {
+                Files.copy(archivo.getInputStream(), rutaArchivo);
+            } catch (IOException ex) {
+                response.put("mensaje", "Error al realizar subida"
+                    .concat(": ")
+                    .concat(ex.getLocalizedMessage()));
+                return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+                
+            }
+            empleado.setFoto(nombreArchivo);
+            service.save(empleado);
+        }
+    
+        response.put("empleado", empleado);
+        response.put("mensaje", "Imagen subida con exito.");
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
     
 }
