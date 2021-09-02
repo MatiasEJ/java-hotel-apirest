@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -119,6 +120,8 @@ public class EmpleadoRestController {
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Empleado empleado     = service.findById(id);
+            borrarFotoAnterior(empleado);
             service.deleteById(id);
         } catch (DataAccessException ex) {
             response.put("mensaje", "Error al realizar DELETE"
@@ -142,7 +145,7 @@ public class EmpleadoRestController {
             return errorConsulta(response, ex);
         }
         if (!archivo.isEmpty()) {
-            String nombreArchivo = UUID.randomUUID().toString()+"_"+archivo.getOriginalFilename().replace(" ", "");
+            String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename().replace(" ", "");
             Path   rutaArchivo   = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
             try {
                 Files.copy(archivo.getInputStream(), rutaArchivo);
@@ -153,13 +156,29 @@ public class EmpleadoRestController {
                 return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
                 
             }
+            //
+            borrarFotoAnterior(empleado);
+    
+    
             empleado.setFoto(nombreArchivo);
             service.save(empleado);
         }
-    
+        
         response.put("empleado", empleado);
         response.put("mensaje", "Imagen subida con exito.");
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    }
+    
+    private void borrarFotoAnterior(Empleado empleado) {
+        String fotoAnterior = empleado.getFoto();
+        if (fotoAnterior != null && fotoAnterior.length() > 0) {
+            Path rutaFotoAnterior    = Paths.get("uploads").resolve(fotoAnterior).toAbsolutePath();
+            File archivoFotoAnterior = rutaFotoAnterior.toFile();
+            if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+                archivoFotoAnterior.delete();
+            }
+            
+        }
     }
     
 }
