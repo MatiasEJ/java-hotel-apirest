@@ -1,6 +1,7 @@
 package com.hotel.model.service;
 
 import com.hotel.model.entity.Empleado;
+import com.hotel.model.entity.Tematica;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,6 +17,5 @@ public interface EmpleadoService {
     Empleado save(Empleado empleado);
     
     void deleteById(Long id);
-    
     
 }

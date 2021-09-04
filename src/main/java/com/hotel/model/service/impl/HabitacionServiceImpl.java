@@ -2,6 +2,8 @@ package com.hotel.model.service.impl;
 
 import com.hotel.model.dao.HabitacionDao;
 import com.hotel.model.entity.Habitacion;
+import com.hotel.model.entity.Tematica;
+import com.hotel.model.entity.TipoHabitacion;
 import com.hotel.model.service.HabitacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,16 @@ public class HabitacionServiceImpl implements HabitacionService {
     @Override
     public Habitacion save(Habitacion habitacion) {
         return habitacionDao.save(habitacion);
+    }
+    
+    @Override
+    public List<Tematica> findAllTematicas() {
+        return habitacionDao.findAllTematicas();
+    }
+    
+    @Override
+    public List<TipoHabitacion> findAllTipoHabitacion() {
+        return habitacionDao.findAllTipoHabitacion();
     }
     
     @Override

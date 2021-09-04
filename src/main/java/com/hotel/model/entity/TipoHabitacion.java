@@ -8,6 +8,6 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name="tipos_habitacion")
-public class TipoHab extends BaseHabitaciones {
+public class TipoHabitacion extends BaseHabitaciones {
     private int cant_huespedes;
 }

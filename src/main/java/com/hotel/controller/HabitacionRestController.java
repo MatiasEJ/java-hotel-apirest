@@ -1,6 +1,8 @@
 package com.hotel.controller;
 
 import com.hotel.model.entity.Habitacion;
+import com.hotel.model.entity.Tematica;
+import com.hotel.model.entity.TipoHabitacion;
 import com.hotel.model.service.impl.HabitacionServiceImpl;
 import com.hotel.shared.ValidationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +72,6 @@ public class HabitacionRestController {
        try{
            habitacionActual.setNum_id(habitacion.getNum_id());
            habitacionActual.setTematica(habitacion.getTematica());
-           habitacionActual.setTipo_hab(habitacion.getTipo_hab());
            habitacionActual.setPrecio_noche(habitacion.getPrecio_noche());
     
            habActualizada = habitacionService.save(habitacionActual);
@@ -87,4 +88,12 @@ public class HabitacionRestController {
     }
     
     
+    @GetMapping("/habitaciones/tematicas")
+    public List<Tematica> findAllTematicas(){
+        return habitacionService.findAllTematicas();
+    }
+    @GetMapping("/habitaciones/tiposHabitacion")
+    public List<TipoHabitacion> findAllTipoHabitacion(){
+        return habitacionService.findAllTipoHabitacion();
+    }
 }
