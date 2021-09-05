@@ -5,6 +5,7 @@ import com.hotel.model.entity.Tematica;
 import com.hotel.model.entity.TipoHabitacion;
 import com.hotel.model.service.impl.HabitacionServiceImpl;
 import com.hotel.shared.ValidationResponse;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.Map;
 import static com.hotel.shared.ValidationResponse.*;
 
 @RestController
+@NoArgsConstructor
 @RequestMapping("/hab")
 public class HabitacionRestController {
     @Autowired
@@ -27,7 +29,7 @@ public class HabitacionRestController {
     public List<Habitacion> index() {return habitacionService.findAll();}
     
     @GetMapping("/habitacion/{id}")
-    public ResponseEntity<?> find(@PathVariable Long id) {
+    public ResponseEntity<?> findHabitacionById(@PathVariable Long id) {
         Habitacion          habitacion;
         Map<String, Object> response = new HashMap<>();
         try {
@@ -45,10 +47,13 @@ public class HabitacionRestController {
     
     
     @PostMapping("/habitacion")
-    public ResponseEntity<?> create(@RequestBody Habitacion habitacion) {
+    public ResponseEntity<?> createHabitacion(@RequestBody Habitacion habitacion) {
         Habitacion          newhabitacion;
         Map<String, Object> response = new HashMap<>();
-        
+        if(habitacion == null){
+            response.put("mensaje","No existe valor de habitacion");
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
         try{
             newhabitacion = habitacionService.save(habitacion);
         }catch (DataAccessException ex){
@@ -60,7 +65,7 @@ public class HabitacionRestController {
     
     
     @PutMapping("/habitacion/{id}")
-    public ResponseEntity<?> update(@RequestBody Habitacion habitacion, @PathVariable Long id) {
+    public ResponseEntity<?> updateHabitacionById(@RequestBody Habitacion habitacion, @PathVariable Long id) {
         Habitacion habitacionActual         = habitacionService.findHabitacionById(id);
         Habitacion habActualizada = null;
         Map<String, Object> response = new HashMap<>();
@@ -83,7 +88,7 @@ public class HabitacionRestController {
     
     
     @DeleteMapping("/habitacion/{id}")
-    public void delete(@PathVariable Long id) {
+    public void deleteHabitacionById(@PathVariable Long id) {
         habitacionService.delete(id);
     }
     
