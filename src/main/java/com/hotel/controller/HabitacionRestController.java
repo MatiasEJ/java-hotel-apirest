@@ -18,6 +18,7 @@ import java.util.Map;
 
 import static com.hotel.shared.ValidationResponse.*;
 
+@CrossOrigin(origins = {"http://localhost:4200"}, maxAge = 3600)
 @RestController
 @NoArgsConstructor
 @RequestMapping("/hab")
