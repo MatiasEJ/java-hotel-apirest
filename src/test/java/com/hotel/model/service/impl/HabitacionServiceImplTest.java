@@ -81,10 +81,9 @@ class HabitacionServiceImplTest {
        //then
        assertEquals(ID_TEST,nuevaHab.getId());
     }
-    @ParameterizedTest
-    @CsvSource({"1,1","2,3"})
-    void save_incremental_param(String ID_HAB,String ESPERADO) {
-        //Give
+    @Test
+    void save_incremental_param() {
+        //Given
         when(habitacionDao.save(any(Habitacion.class))).then(new Answer<Habitacion>(){
             Long sequence =1l;
             @Override
@@ -98,6 +97,7 @@ class HabitacionServiceImplTest {
         Habitacion nuevaHab = habitacionService.save(habitacion);
         assertEquals(1l,nuevaHab.getId());
         Habitacion nuevaHab2= habitacionService.save(habitacion);
+        verify(habitacionDao,times(2)).save(any(Habitacion.class));
         //then
         assertEquals(2l,nuevaHab2.getId());
     }
