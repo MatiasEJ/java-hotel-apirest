@@ -6,9 +6,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +35,12 @@ class HabitacionServiceImplTest {
     
     @Mock
     HabitacionDao habitacionDao;
+    Habitacion habitacion;
     
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        habitacion = new Habitacion(PRECIO_NOCHE, NUM_ID);
     }
     
     @Test
@@ -47,17 +54,56 @@ class HabitacionServiceImplTest {
     
     @Test
     void save() {
-        Habitacion habitacion = new Habitacion(PRECIO_NOCHE, NUM_ID);
-        when(habitacionDao.save(habitacion)).thenReturn(habitacion);
-        
+        when(habitacionDao.save(any(Habitacion.class))).thenReturn(habitacion);
+        when(habitacionDao.save(any(Habitacion.class))).thenReturn(Habitacion.builder().id(2l).build());
         Habitacion nuevaHab = habitacionService.save(habitacion);
-        verify(habitacionDao, times(1)).save(habitacion);
+        Habitacion nuevaHab2 = habitacionService.save(Habitacion.builder().id(2l).build());
+        verify(habitacionDao).save(habitacion);
         assertNotNull(nuevaHab);
+        assertEquals(2l, nuevaHab2.getId());
+    }
+    
+    @ParameterizedTest
+    @ValueSource(longs = {1l,2l,3l,4l})
+    void save_incremental(Long ID_TEST) {
+        //Give
+        when(habitacionDao.save(any(Habitacion.class))).then(new Answer<Habitacion>(){
+            Long sequence = ID_TEST;
+            @Override
+            public Habitacion answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Habitacion habitacion = invocationOnMock.getArgument(0);
+                habitacion.setId(sequence++);
+               return habitacion;
+            }
+        });
+        //when
+       Habitacion nuevaHab = habitacionService.save(habitacion);
+       //then
+       assertEquals(ID_TEST,nuevaHab.getId());
+    }
+    @ParameterizedTest
+    @CsvSource({"1,1","2,3"})
+    void save_incremental_param(String ID_HAB,String ESPERADO) {
+        //Give
+        when(habitacionDao.save(any(Habitacion.class))).then(new Answer<Habitacion>(){
+            Long sequence =1l;
+            @Override
+            public Habitacion answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Habitacion habitacion = invocationOnMock.getArgument(0);
+                habitacion.setId(sequence++);
+                return habitacion;
+            }
+        });
+        //when
+        Habitacion nuevaHab = habitacionService.save(habitacion);
+        assertEquals(1l,nuevaHab.getId());
+        Habitacion nuevaHab2= habitacionService.save(habitacion);
+        //then
+        assertEquals(2l,nuevaHab2.getId());
     }
     
     @Test
     void testFindHabitacionById() {
-        Habitacion habitacion = new Habitacion(ID, PRECIO_NOCHE);
         when(habitacionDao.findById(anyLong())).thenReturn(Optional.of(habitacion));
         Habitacion hab = habitacionService.findHabitacionById(habitacion.getId());
         assertNotNull(hab);

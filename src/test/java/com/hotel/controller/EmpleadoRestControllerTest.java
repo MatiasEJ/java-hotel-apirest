@@ -22,8 +22,7 @@ import java.net.MalformedURLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class EmpleadoRestControllerTest {
     
@@ -59,6 +58,7 @@ class EmpleadoRestControllerTest {
         @Test
         @DisplayName("Prueba DataAccessError.")
         void findEmpleadoById_DataAccessError() {
+            
             when(empleadoService.findById(anyLong())).thenThrow(new DataAccessException("msg") {
                 @Override
                 public Throwable getMostSpecificCause() {
@@ -75,14 +75,14 @@ class EmpleadoRestControllerTest {
             assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
         }
     
-//        @ParameterizedTest
-//        @ValueSource(longs = {1l,2l,3l})
-//        void findEmpleadoById_OK(Long id_test){
-//            when(empleadoService.findById(ID_EMPLEADO)).thenReturn(empleado);
-//            ResponseEntity<?> response = empleadoRestController.findEmpleadoById(ID_EMPLEADO);
-//            assertEquals(HttpStatus.OK,response.getStatusCode());
-//
-//        }
+        @ParameterizedTest
+        @ValueSource(longs = {1l,2l,3l})
+        void findEmpleadoById_OK(Long id_test){
+            when(empleadoService.findById(ID_EMPLEADO)).thenReturn(empleado);
+            ResponseEntity<?> response = empleadoRestController.findEmpleadoById(ID_EMPLEADO);
+            assertEquals(HttpStatus.OK,response.getStatusCode());
+
+        }
         
     }
     
