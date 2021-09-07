@@ -120,3 +120,13 @@ INSERT INTO habitaciones (num_id,precio_noche,tematica_id,tipo_hab_id) VALUES('1
 INSERT INTO habitaciones (num_id,precio_noche,tematica_id,tipo_hab_id) VALUES('12121212',96.0,3,4);
 INSERT INTO habitaciones (num_id,precio_noche,tematica_id,tipo_hab_id) VALUES('12121212',113.0,1,2);
 INSERT INTO habitaciones (num_id,precio_noche,tematica_id,tipo_hab_id) VALUES('12121212',108.0,2,3);
+
+INSERT INTO usuarios (username,password,enabled) VALUES('admin','$2a$10$uyj4LFniG/jI/WX76YHPxeRZw7gShzLKLHSj5PXQm..qyfq4i10L2',1);
+INSERT INTO usuarios (username,password,enabled) VALUES('andres','$2a$10$WoZpkFi.7jeXk4PL8uGf4.T/2XdbAqcE8Fcva5HIAzaPTaeI2bcM',1);
+
+INSERT INTO roles (nombre) VALUES('ROLE_USER');
+INSERT INTO roles (nombre) VALUES('ROLE_ADMIN');
+
+INSERT INTO usuarios_roles (usuario_id,rol_id) VALUES(1,1);
+INSERT INTO usuarios_roles (usuario_id,rol_id) VALUES(2,2);
+INSERT INTO usuarios_roles (usuario_id,rol_id) VALUES(2,1);
