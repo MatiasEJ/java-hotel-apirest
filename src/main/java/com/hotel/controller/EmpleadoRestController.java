@@ -1,10 +1,13 @@
 package com.hotel.controller;
 
+import com.hotel.auth.SecurityConstants;
 import com.hotel.model.entity.Empleado;
 import com.hotel.model.entity.Tematica;
 import com.hotel.model.service.impl.EmpleadoServiceImpl;
 import com.hotel.model.service.impl.UploadServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,7 @@ import static com.hotel.shared.ValidationResponse.*;
 
 @CrossOrigin(origins = {"http://localhost:4200"}, maxAge = 3600)
 @RestController
+@Slf4j
 @RequestMapping("/api")
 public class EmpleadoRestController {
     
@@ -42,6 +46,7 @@ public class EmpleadoRestController {
     
     @GetMapping(EmpleadoUri.EMPLEADOS)
     public List<Empleado> index() {
+        log.info(SecurityConstants.getTokenSecret());
         return empleadoService.findAll();
     }
     

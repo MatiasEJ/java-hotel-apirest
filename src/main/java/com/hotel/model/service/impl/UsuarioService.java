@@ -31,14 +31,16 @@ public class UsuarioService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Usuario usuario = usuarioDao.findUsuarioByUsername(s);
-        if(usuario == null){
+        if (usuario == null) {
             log.error("No existe el usuario en el sistema");
             throw new UsernameNotFoundException("No existe el usuario en el sistema");
         }
         List<GrantedAuthority> authorities;
         authorities = usuario.getRoles().stream()
                              .map(rol -> new SimpleGrantedAuthority(rol.getNombre()))
-                             .peek(rol -> log.info("Rol "+rol.getAuthority()))
+                             .peek(rol -> {
+                                 log.info("Rol ->" + rol.getAuthority());
+                             })
                              .collect(Collectors.toList());
         
         return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
