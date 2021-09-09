@@ -13,6 +13,9 @@ public class Usuario extends BaseEntity{
     private String username;
     private String password;
     private Boolean enabled;
+    private String nombre;
+    private String apellido;
+    private String email;
     
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(name = "usuarios_roles",
@@ -20,4 +23,5 @@ public class Usuario extends BaseEntity{
         inverseJoinColumns = @JoinColumn(name = "rol_id"),
         uniqueConstraints = {@UniqueConstraint(columnNames = {"usuario_id","rol_id"})})
     private List<Rol> roles;
+    
 }

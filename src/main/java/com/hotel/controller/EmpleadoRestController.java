@@ -46,7 +46,6 @@ public class EmpleadoRestController {
     
     @GetMapping(EmpleadoUri.EMPLEADOS)
     public List<Empleado> index() {
-        log.info(SecurityConstants.getTokenSecret());
         return empleadoService.findAll();
     }
     

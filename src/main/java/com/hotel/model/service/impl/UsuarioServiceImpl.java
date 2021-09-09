@@ -2,6 +2,7 @@ package com.hotel.model.service.impl;
 
 import com.hotel.model.dao.UsuarioDao;
 import com.hotel.model.entity.Usuario;
+import com.hotel.model.service.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,12 +19,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
     
     @Autowired
     UsuarioDao usuarioDao;
     
-    public UsuarioService(UsuarioDao usuarioDao) {
+    public UsuarioServiceImpl(UsuarioDao usuarioDao) {
         this.usuarioDao = usuarioDao;
     }
     
@@ -46,4 +47,9 @@ public class UsuarioService implements UserDetailsService {
         return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
     }
     
+    
+    @Override
+    public Usuario findByUsername(String username) {
+        return usuarioDao.findByUsername(username);
+    }
 }
