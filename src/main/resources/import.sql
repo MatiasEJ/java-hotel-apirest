@@ -123,7 +123,7 @@ INSERT INTO habitaciones (num_id,precio_noche,tematica_id,tipo_hab_id) VALUES('1
 INSERT INTO habitaciones (num_id,precio_noche,tematica_id,tipo_hab_id) VALUES('12121212',108.0,2,3);
 
 INSERT INTO usuarios (username,password,enabled,nombre,apellido,email) VALUES('admin','$2a$10$uyj4LFniG/jI/WX76YHPxeRZw7gShzLKLHSj5PXQm..qyfq4i10L2',1,"juan","juanes","juanjuanes@gmail.com");
-INSERT INTO usuarios (username,password,enabled,nombre,apellido,email) VALUES('andres','$2a$10$WoZpkFi.7jeXk4PL8uGf4.T/2XdbAqcE8Fcva5HIAzaPTaeI2bcM',1,"martin","martinez","martinMartinez@gmail.com");
+INSERT INTO usuarios (username,password,enabled,nombre,apellido,email) VALUES('andres','$2a$10$ZWgQz/Sg5Uw5oaJ0U6lN1ufAIIdjf515X.MaVfs7j5cRa1kYjJZV6',1,"martin","martinez","martinMartinez@gmail.com");
 
 INSERT INTO roles (nombre) VALUES('ROLE_USER');
 INSERT INTO roles (nombre) VALUES('ROLE_ADMIN');
